@@ -7,7 +7,7 @@ const {
 const userRouter = require("express").Router();
 
 //UPDATE
-userRouter.put("/:id", async (req, res) => {
+userRouter.put("/:id",verifyTokenAndAuthorization, async (req, res) => {
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(
       req.body.password,
@@ -32,7 +32,7 @@ userRouter.put("/:id", async (req, res) => {
 
 
 //GET USER
-userRouter.get("/:id",  async (req, res) => {
+userRouter.get("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const user = await UserModel.findById(req.params.id);
     const { password, ...userdata } = user._doc;
